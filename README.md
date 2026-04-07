@@ -48,3 +48,33 @@ The model underwent fine-tuning using the **Alpaca-GPT4** dataset, focusing on i
 ```bash
 pip install unsloth
 pip install --no-deps xformers trl peft accelerate bitsandbytes
+```
+Quick Start (Python)
+
+```Python
+from unsloth import FastLanguageModel
+import torch
+
+model, tokenizer = FastLanguageModel.from_pretrained(
+    model_name = "YourUsername/Nexa_0.4_Enhanced",
+    max_seq_length = 2048,
+    load_in_4bit = True,
+)
+
+# Enable faster inference
+FastLanguageModel.for_inference(model) 
+
+# Example Inference
+inputs = tokenizer(
+    ["### Instruction:\nSpiegami come funziona l'intelligenza artificiale.\n\n### Response:\n"],
+    return_tensors = "pt"
+).to("cuda")
+
+outputs = model.generate(**inputs, max_new_tokens = 128)
+print(tokenizer.batch_decode(outputs))
+```
+
+📜 License
+This project is licensed under the Apache License 2.0.
+
+Developed with ❤️ by the Nexa Team.
